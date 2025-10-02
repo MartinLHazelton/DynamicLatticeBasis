@@ -2,7 +2,9 @@
 
 DynamicLatticeBasis is an R package for implementing dynamic lattice basis sampling for statistical linear inverse problems. The methodology is described in:
 
-Hazelton, M.L., McVeagh, M.R. and van Brunt, B. (2020). Geometrically aware dynamic Markov bases for statistical linear inverse problems, *Biometrika*, in press. https://doi.org/10.1093/biomet/asaa083
+Hazelton, M.L., McVeagh, M.R. and van Brunt, B. (2020). Geometrically aware dynamic Markov bases for statistical linear inverse problems, *Biometrika*, 108(3), 609-626.. https://doi.org/10.1093/biomet/asaa083
+
+Update 3/10/2025: corrections to code to produce efficiency plots. These changes do not result in big changes to general conclusions.  
 
 ## Install
 
@@ -16,7 +18,7 @@ devtools::install_github("MartinLHazelton/DynamicLatticeBasis")
 
 ## Code for simulation results
 
-The code below implements the simulation results in Hazelton, McVeagh and van Brunt (2020).
+The code below implements the simulation results in Hazelton, McVeagh and van Brunt (2021).
 
 ```
 devtools::install_github("MartinLHazelton/DynamicLatticeBasis")
@@ -172,7 +174,9 @@ book.3way.times.no.ini
 book.3way.eff.no.ini
 
 book.3way.ns <- which(book.3way.means.no.ini[,4]>2)
-book.3way.ns.eff <- (book.3way.size.no.ini[book.3way.ns,c(1,3,4,6,7,9,10)]/book.3way.size.no.ini[book.3way.ns,11])*(book.3way.times.no.ini[11]/book.3way.times.no.ini[c(1,3,4,6,7,9,10)])
+# book.3way.ns.eff <- (book.3way.size.no.ini[book.3way.ns,c(1,3,4,6,7,9,10)]/book.3way.size.no.ini[book.3way.ns,11])*(book.3way.times.no.ini[11]/book.3way.times.no.ini[c(1,3,4,6,7,9,10)]) # original with error
+book.3way.ns.eff <- t(t(book.3way.size.no.ini[book.3way.ns,c(1,3,4,6,7,9,10)]/book.3way.size.no.ini[book.3way.ns,11])*(book.3way.times.no.ini[11]/book.3way.times.no.ini[c(1,3,4,6,7,9,10)]))
+
 
 # Relative efficiency plot 
 
@@ -343,7 +347,9 @@ yang.times.no.ini
 yang.eff.no.ini
 
 yang.ns <- which(yang.means.no.ini[,4]>2)
-yang.ns.eff <- (yang.size.no.ini[yang.ns,c(1,3,4,6,7,9,10)]/yang.size.no.ini[yang.ns,11])*(yang.times.no.ini[11]/yang.times.no.ini[c(1,3,4,6,7,9,10)])
+# yang.ns.eff <- (yang.size.no.ini[yang.ns,c(1,3,4,6,7,9,10)]/yang.size.no.ini[yang.ns,11])*(yang.times.no.ini[11]/yang.times.no.ini[c(1,3,4,6,7,9,10)]) # original incorrect
+yang.ns.eff <- t(t(yang.size.no.ini[yang.ns,c(1,3,4,6,7,9,10)]/yang.size.no.ini[yang.ns,11])*(yang.times.no.ini[11]/yang.times.no.ini[c(1,3,4,6,7,9,10)]))
+
 
 # Relative efficiency plot 
 
@@ -511,7 +517,10 @@ londonrd.times.no.ini
 londonrd.eff.no.ini
 
 londonrd.ns <- which(londonrd.means.no.ini[,4]>2)
-londonrd.ns.eff <- (londonrd.size.no.ini[londonrd.ns,c(4,6,7,9,10)]/londonrd.size.no.ini[londonrd.ns,11])*(londonrd.times.no.ini[11]/londonrd.times.no.ini[c(4,6,7,9,10)])
+# londonrd.ns.eff <- (londonrd.size.no.ini[londonrd.ns,c(4,6,7,9,10)]/londonrd.size.no.ini[londonrd.ns,11])*(londonrd.times.no.ini[11]/londonrd.times.no.ini[c(4,6,7,9,10)]) # original wrong
+londonrd.ns.eff <- t(t(londonrd.size.no.ini[londonrd.ns,c(4,6,7,9,10)]/londonrd.size.no.ini[londonrd.ns,11])*(londonrd.times.no.ini[11]/londonrd.times.no.ini[c(4,6,7,9,10)]))
+
+
 
 # Relative efficiency plot 
 
@@ -605,8 +614,9 @@ book.2way.size.uniform
 book.2way.eff.uniform
 
 book.2way.ns <- which(book.2way.means.uniform[,1]>2)
-book.2way.ns.eff <- book.2way.size.uniform[book.2way.ns,1:3]/book.2way.size.uniform[book.2way.ns,4]
-
+# book.2way.ns.eff <- book.2way.size.uniform[book.2way.ns,1:3]/book.2way.size.uniform[book.2way.ns,4]  # original incorrect
+book.2way.times <- c(book.2way.uniform.tune0.time,book.2way.uniform.tune.5.time,book.2way.uniform.tune100.time,book.2way.MB.uniform.time) 
+book.2way.ns.eff <- t(t(book.2way.size.uniform[book.2way.ns,1:3]/book.2way.size.uniform[book.2way.ns,4])/(book.2way.times[1:3]/book.2way.times[4]) )
 
 # relative efficiency plot
 
